@@ -1,11 +1,10 @@
 // ================= PIN CONFIG =================
 
 // ----- RED LEDs (6) -----
-int red[]  = {6,7,8,9,10,11};
+int red[]  = {6,7,10,11,12,13};
 
 // ----- BLUE LEDs (6) -----
-// A4 replaced with 0 (RX pin)
-int blue[] = {A1,A2,A3,0,12,13};
+int blue[] = {A1,A2,A3,A4,8,9};
 
 // ----- FRONT / REAR -----
 int frontLeft  = 2;
@@ -47,11 +46,11 @@ void loop() {
     case 1: lightbarSingle(); break;
     case 2: lightbarDouble(); break;
     case 3: lightbarTriple(); break;
-    case 4: americanBurst(); break;
-    case 5: alternatingRapid(); break;
+    case 4: americanBurst(); break;// 
+    case 5: alternatingRapid(); break;//a bit  detlay 250 or 500 ms
     case 6: progressiveSweep(); break;
     case 7: pursuitChase(); break;
-    case 8: fullStrobe(); break;
+    case 8: fullStrobe(); break; // delay 500ms
   }
 }
 
@@ -62,7 +61,7 @@ void checkButton(){
 
   if(reading == LOW && lastButtonState == HIGH){
     mode++;
-    if(mode > 8) mode = 0; // fixed (you had 9 but only 0–8 modes)
+    if(mode > 9) mode = 0;
     delay(250);
   }
 
@@ -87,10 +86,10 @@ void redSide(){
     digitalWrite(red[i],HIGH);
     digitalWrite(blue[i],LOW);
   }
-  digitalWrite(frontLeft,LOW);
-  digitalWrite(rearLeft,LOW);
-  digitalWrite(frontRight,HIGH);
-  digitalWrite(rearRight,HIGH);
+  digitalWrite(frontLeft,HIGH);
+  digitalWrite(rearLeft,HIGH);
+  digitalWrite(frontRight,LOW);
+  digitalWrite(rearRight,LOW);
 }
 
 void blueSide(){
@@ -98,33 +97,12 @@ void blueSide(){
     digitalWrite(blue[i],HIGH);
     digitalWrite(red[i],LOW);
   }
-  digitalWrite(frontRight,LOW);
-  digitalWrite(rearRight,HIGH);
-  digitalWrite(frontLeft,HIGH);
-  digitalWrite(rearLeft,HIGH);
-}
-
-void redSideAlternate(){
-  for(int i=0;i<6;i++){
-    digitalWrite(red[i],HIGH);
-    digitalWrite(blue[i],LOW);
-  }
-  digitalWrite(frontLeft,HIGH);
-  digitalWrite(frontRight,LOW);
-  digitalWrite(rearLeft,LOW);
-  digitalWrite(rearRight,HIGH);
-}
-
-void blueSideAlternate(){
-  for(int i=0;i<6;i++){
-    digitalWrite(blue[i],HIGH);
-    digitalWrite(red[i],LOW);
-  }
-  digitalWrite(frontLeft,LOW);
   digitalWrite(frontRight,HIGH);
-  digitalWrite(rearLeft,HIGH);
-  digitalWrite(rearRight,LOW);
+  digitalWrite(rearRight,HIGH);
+  digitalWrite(frontLeft,LOW);
+  digitalWrite(rearLeft,LOW);
 }
+
 
 // ================= MODES =================
 
@@ -140,27 +118,27 @@ void cruise(){
 
 // 1 – Single
 void lightbarSingle(){
-  redSideAlternate(); delay(1000); allOff(); delay(80);
-  blueSideAlternate(); delay(1000); allOff(); delay(80);
+  redSide(); delay(120); allOff(); delay(80);
+  blueSide(); delay(120); allOff(); delay(80);
 }
 
 // 2 – Double
 void lightbarDouble(){
   for(int i=0;i<2;i++){
-    redSideAlternate(); delay(100); allOff(); delay(70);
+    redSide(); delay(100); allOff(); delay(70);
   }
   for(int i=0;i<2;i++){
-    blueSideAlternate(); delay(100); allOff(); delay(70);
+    blueSide(); delay(100); allOff(); delay(70);
   }
 }
 
 // 3 – Triple
 void lightbarTriple(){
   for(int i=0;i<3;i++){
-    redSideAlternate(); delay(90); allOff(); delay(60);
+    redSide(); delay(90); allOff(); delay(60);
   }
   for(int i=0;i<3;i++){
-    blueSideAlternate(); delay(90); allOff(); delay(60);
+    blueSide(); delay(90); allOff(); delay(60);
   }
 }
 
